@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo">СуперТёма</div>
+            <nav class="nav">
+                <a href="/">Главная</a>
+                <a href="/about">Про нас</a>
+                <a href="/contact">Контакты</a>
+                <a href="/warehouse">Склад экипировки</a>
+            </nav>
+        </div>
+    </header>
+
+    {% block body %}{% endblock %}
+</body>
+</html>
