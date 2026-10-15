@@ -1,0 +1,33 @@
+{%extends 'base.html'%}
+
+{%block title%}
+Xnj nj nfv 
+{% endblock %}
+
+{%block body%}
+<h1>Спортивный инвентарь</h1>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Категория</th>
+                <th>Количество</th>
+                <th>Состояние</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.condition_status }}</td>
+                <td>{{ item.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

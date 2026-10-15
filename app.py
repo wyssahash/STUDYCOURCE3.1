@@ -1,17 +1,44 @@
 from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-
+import mysql.connector
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
+    
 
-class Staff(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    count = db.Column(db.Integer, nullable=False)
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Password",
+        database="sports_inventory",
+        port=3306
+    )
 
-    def __repr__(self):
-        return "<Staff %r>" % self.id
+
+@app.route("/equipment")
+def equipment():
+    conn = get_db_connection()
+
+    try:
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT
+                e.equipment_id,
+                e.name,
+                c.name AS category,
+                e.quantity,
+                e.condition_status,
+                e.price
+            FROM equipment AS e
+            JOIN categories AS c
+                ON e.category_id = c.category_id
+            ORDER BY e.equipment_id
+        """)
+
+        items = cursor.fetchall()
+        return render_template("equipment.html", items=items)
+
+    finally:
+        cursor.close()
+        conn.close()
 
 
 @app.route("/")
@@ -27,21 +54,6 @@ def about():
 @app.route("/contact")
 def contact():
     return render_template("contact.html")  
-
-
-
-
-
-@app.route("/calculator", methods=["GET", "POST"])
-def calculator():     
-    result = None
-    if request.method == "POST":
-        expression = request.form.get("expression")
-        try:
-            result = eval(expression)
-        except:
-            result = f"Ошибка: "
-    return render_template("calculator.html", result=result)  
 
 
 if __name__ == '__main__':

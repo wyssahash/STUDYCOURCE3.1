@@ -1,0 +1,4 @@
+git status статус
+git add .   подготовить
+git commit -m "Update Flask project" создать сохранение 
+git push выгрузить
